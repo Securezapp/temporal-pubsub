@@ -1,0 +1,20 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "@main/*": ["src/*"],
+      "@test/*": ["test/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
