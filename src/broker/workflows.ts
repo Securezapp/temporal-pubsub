@@ -7,6 +7,8 @@ import {
   workflowInfo
 } from '@temporalio/workflow';
 
+import { topicNameFromWorkflowId } from '../common'
+
 export type SubscribeInput = [string]
 export type PublishInput = any[]
 export type SubscribersOutput = any[]
@@ -16,7 +18,7 @@ const publishSignal = defineSignal<PublishInput>('publish')
 const subscribersQuery = defineQuery<void, SubscribersOutput>('subscribers')
 
 export async function topic (): Promise<void> {
-  const topicName = workflowInfo().workflowId
+  const topicName = topicNameFromWorkflowId(workflowInfo().workflowId)
   const subscribers = new Set<string>()
 
   setHandler(subscribeSignal, (taskQueue) => {
