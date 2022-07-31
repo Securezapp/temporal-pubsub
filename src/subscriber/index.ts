@@ -24,8 +24,7 @@ export class Subscriber {
       activities: subscriptions,
       taskQueue
     })
-    void worker.run()
-    console.log(`Started subscriber "${taskQueue}"`)
+    console.log(`Creating subscriber on task queue "${taskQueue}"`)
 
     const client = new WorkflowClient({
       ...options,
@@ -33,7 +32,7 @@ export class Subscriber {
     })
     for (const topic in subscriptions) {
       if (subscriptions.hasOwnProperty(topic)) {
-        console.log(`Subscribing to ${topic}`)
+        console.log(`Subscribing to topic "${topic}"`)
         await client.signalWithStart<typeof TopicWorkflow, SubscribeInput>('topic', {
           signal: 'subscribe',
           signalArgs: [taskQueue],

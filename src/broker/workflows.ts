@@ -19,10 +19,8 @@ export async function topic (): Promise<void> {
   const topicName = workflowInfo().workflowId
   const subscribers = new Set<string>()
 
-  console.log(`Creating new topic ${topicName}`)
-
   setHandler(subscribeSignal, (taskQueue) => {
-    console.log(`Adding subsciber: "${taskQueue}"`)
+    console.log(`Adding subscriber: "${taskQueue}"`)
     subscribers.add(taskQueue)
     return Promise.resolve(undefined)
   })
@@ -32,20 +30,21 @@ export async function topic (): Promise<void> {
     for await (const subscriber of subscribers) {
       console.log(`Notifying subscriber: ${subscriber}`)
       const { [topicName]: handler } = proxyActivities({
-        taskQueue: subscriber
+        taskQueue: subscriber,
+        startToCloseTimeout: '1 hour'
       })
       await handler(...payload)
     }
     return Promise.resolve(undefined)
   })
 
-  setHandler(subscribersQuery, async () => {
-    return Promise.resolve(subscribers)
+  setHandler(subscribersQuery, () => {
+    return [...subscribers.values()]
   })
 
-  console.log(`Setup for topic ${topicName} completed`)
+  console.log(`Created topic ${topicName}`)
 
   while (true) {
-    sleep('1 year')
+    await sleep('1 year')
   }
 }

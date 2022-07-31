@@ -7,6 +7,7 @@ async function main () {
       hello: async (name: string) => { console.log(`Hello, ${name}!`) }
     }
   })
+  await subscriber.run()
 }
 
 main()
